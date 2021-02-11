@@ -4,18 +4,17 @@ import (
 	"net/http"
 
 	"github.com/clarketm/boggle-api/pkg/trie"
-	"github.com/gorilla/mux"
 )
 
 type Server struct {
 	//db     *someDatabase
 	Dictionary *trie.Trie
-	Router     *mux.Router
+	Router     *http.ServeMux
 }
 
 func NewServer() *Server {
 	s := &Server{
-		Router:     mux.NewRouter(),
+		Router:     http.NewServeMux(),
 		Dictionary: trie.NewTrie(),
 	}
 	s.buildDictionary()
