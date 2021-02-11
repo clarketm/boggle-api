@@ -62,7 +62,8 @@ func (s *Server) handleValidateWord() http.HandlerFunc {
 
 		word := strings.ToLower(req.Word)
 		valid := s.Dictionary.Search(word)
+		res := response{Valid: valid}
 
-		s.respond(w, r, response{Valid: valid}, http.StatusOK)
+		s.respond(w, r, res, http.StatusOK)
 	}
 }
