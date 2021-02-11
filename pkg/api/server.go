@@ -6,16 +6,16 @@ import (
 	"github.com/clarketm/boggle-api/pkg/trie"
 )
 
-type Server struct {
+type server struct {
 	//db     *someDatabase
-	Dictionary *trie.Trie
-	Router     *http.ServeMux
+	dictionary *trie.Trie
+	router     *http.ServeMux
 }
 
-func NewServer() *Server {
-	s := &Server{
-		Router:     http.NewServeMux(),
-		Dictionary: trie.NewTrie(),
+func NewServer() *server {
+	s := &server{
+		router:     http.NewServeMux(),
+		dictionary: trie.NewTrie(),
 	}
 	s.buildDictionary()
 	s.routes()
@@ -23,6 +23,6 @@ func NewServer() *Server {
 	return s
 }
 
-func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	s.Router.ServeHTTP(w, r)
+func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	s.router.ServeHTTP(w, r)
 }

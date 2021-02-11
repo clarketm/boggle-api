@@ -1,6 +1,6 @@
 package api
 
-func (s *Server) routes() {
-	s.Router.HandleFunc("/api/health", s.handleHealth())
-	s.Router.HandleFunc("/api/validate", s.handleValidateWord())
+func (s *server) routes() {
+	s.router.HandleFunc("/api/health", s.handleHealth())
+	s.router.HandleFunc("/api/validate", s.handleValidateWord())
 }

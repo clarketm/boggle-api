@@ -10,7 +10,9 @@ import (
 )
 
 func fetchDictionary() io.Reader {
-	file, err := os.Open("./Dictionary.txt")
+	// TODO: fetch from DB (if available).
+
+	file, err := os.Open("./dictionary.txt")
 	if err == nil {
 		return file
 	}
@@ -23,7 +25,7 @@ func fetchDictionary() io.Reader {
 	return nil
 }
 
-func (s *Server) buildDictionary() {
+func (s *server) buildDictionary() {
 	dict := fetchDictionary()
 	if dict == nil {
 		log.Fatal("Unable to build dictionary.")
@@ -33,13 +35,13 @@ func (s *Server) buildDictionary() {
 
 	for scanner.Scan() {
 		word := strings.ToLower(scanner.Text())
-		s.Dictionary.Add(word)
+		s.dictionary.Add(word)
 	}
 
 	//err := scanner.Err()
 }
 
-func (s *Server) handleValidateWord() http.HandlerFunc {
+func (s *server) handleValidateWord() http.HandlerFunc {
 	type request struct {
 		Word string `json:"word"`
 	}
@@ -61,7 +63,7 @@ func (s *Server) handleValidateWord() http.HandlerFunc {
 		}
 
 		word := strings.ToLower(req.Word)
-		valid := s.Dictionary.Search(word)
+		valid := s.dictionary.Search(word)
 		res := response{Valid: valid}
 
 		s.respond(w, r, res, http.StatusOK)

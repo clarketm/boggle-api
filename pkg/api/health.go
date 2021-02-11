@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func (s *Server) handleHealth() http.HandlerFunc {
+func (s *server) handleHealth() http.HandlerFunc {
 	type response struct {
 		Name    string `json:"name"`
 		Version string `json:"version"`

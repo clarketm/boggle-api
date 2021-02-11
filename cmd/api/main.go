@@ -9,5 +9,5 @@ import (
 
 func main() {
 	s := api.NewServer()
-	log.Fatal(http.ListenAndServe(":8080", s.Router))
+	log.Fatal(http.ListenAndServe(":8080", s))
 }

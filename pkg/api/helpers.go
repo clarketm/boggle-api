@@ -5,11 +5,11 @@ import (
 	"net/http"
 )
 
-func (s *Server) decode(w http.ResponseWriter, r *http.Request, v interface{}) error {
+func (s *server) decode(w http.ResponseWriter, r *http.Request, v interface{}) error {
 	return json.NewDecoder(r.Body).Decode(v)
 }
 
-func (s *Server) respond(w http.ResponseWriter, r *http.Request, data interface{}, status int) {
+func (s *server) respond(w http.ResponseWriter, r *http.Request, data interface{}, status int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 
