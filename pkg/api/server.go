@@ -1,28 +1,14 @@
 package api
 
 import (
+	"log"
 	"net/http"
-
-	"github.com/clarketm/boggle-api/pkg/trie"
 )
 
-type server struct {
-	//db     *someDatabase
-	dictionary *trie.Trie
-	router     *http.ServeMux
-}
-
-func NewServer() *server {
-	s := &server{
-		router:     http.NewServeMux(),
-		dictionary: trie.NewTrie(),
+func NewServer(addr string, errorLog *log.Logger, handler http.Handler) *http.Server {
+	return &http.Server{
+		Addr:     addr,
+		ErrorLog: errorLog,
+		Handler:  handler,
 	}
-	s.buildDictionary()
-	s.routes()
-
-	return s
-}
-
-func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	s.router.ServeHTTP(w, r)
 }

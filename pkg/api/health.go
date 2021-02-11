@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func (s *server) handleHealth() http.HandlerFunc {
+func (s *service) handleHealth() http.HandlerFunc {
 	type response struct {
 		Name    string `json:"name"`
 		Version string `json:"version"`
@@ -12,6 +12,7 @@ func (s *server) handleHealth() http.HandlerFunc {
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
+			w.Header().Set("Allow", http.MethodGet)
 			s.respond(w, r, nil, http.StatusMethodNotAllowed)
 			return
 		}
