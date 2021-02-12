@@ -3,27 +3,42 @@ package api
 import (
 	"net/http"
 
+	"github.com/clarketm/boggle-api/pkg/db"
 	"github.com/clarketm/boggle-api/pkg/trie"
 	"github.com/clarketm/boggle-api/pkg/util"
 )
 
 type service struct {
-	//db     *someDatabase
+	db         *db.DB
 	dictionary *trie.Trie
 	router     *http.ServeMux
-	Log        *util.Logger
+	log        *util.Logger
 }
 
-func NewService() *service {
+func NewService(cfg *util.Config, logger *util.Logger) (*service, error) {
+	dbConnect, err := db.NewDB(cfg.DbUser, cfg.DbPassword, cfg.DbHost)
+	if err != nil {
+		return nil, err
+	}
+
 	s := &service{
+		db:         dbConnect,
 		dictionary: trie.NewTrie(),
 		router:     http.NewServeMux(),
-		Log:        util.NewLogger(),
+		log:        logger,
 	}
-	return s
+
+	if err = s.Configure(); err != nil {
+		return nil, err
+	}
+
+	return s, nil
 }
 
 func (s *service) Configure() error {
+	if err := s.initDB(); err != nil {
+		return err
+	}
 	if err := s.buildDictionary(); err != nil {
 		return err
 	}

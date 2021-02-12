@@ -9,14 +9,16 @@ import (
 
 func main() {
 	cfg := util.NewConfig()
-	addr := fmt.Sprintf(":%d", cfg.Addr)
+	addr := fmt.Sprintf(":%d", cfg.HttpPort)
 
-	svc := api.NewService()
-	if err := svc.Configure(); err != nil {
-		svc.Log.Error.Fatal(err)
+	logger := util.NewLogger()
+
+	svc, err := api.NewService(cfg, logger)
+	if err != nil {
+		logger.Error.Fatal(err)
 	}
 
-	server := api.NewServer(addr, svc.Log.Error, svc)
+	server := api.NewServer(addr, logger.Error, svc)
 
-	svc.Log.Error.Fatal(server.ListenAndServe())
+	logger.Error.Fatal(server.ListenAndServe())
 }
