@@ -13,12 +13,17 @@ type DB struct {
 	DB *sql.DB
 }
 
-func NewDB(user, password, host string) (*DB, error) {
+func NewDB(dbEnable bool, user, password, host string) (*DB, error) {
+	if !dbEnable {
+		return nil, nil
+	}
+
 	dbSrc := fmt.Sprintf("%s:%s@tcp(%s)/", user, password, host)
 	dbConnect, err := sql.Open("mysql", dbSrc)
 	if err != nil {
 		return nil, err
 	}
+
 	return &DB{DB: dbConnect}, nil
 }
 

@@ -16,7 +16,7 @@ type service struct {
 }
 
 func NewService(cfg *util.Config, logger *util.Logger) (*service, error) {
-	dbConnect, err := db.NewDB(cfg.DbUser, cfg.DbPassword, cfg.DbHost)
+	dbConnect, err := db.NewDB(cfg.DbEnable, cfg.DbUser, cfg.DbPassword, cfg.DbHost)
 	if err != nil {
 		return nil, err
 	}
@@ -28,18 +28,18 @@ func NewService(cfg *util.Config, logger *util.Logger) (*service, error) {
 		log:        logger,
 	}
 
-	if err = s.Configure(); err != nil {
+	if err = s.Configure(cfg); err != nil {
 		return nil, err
 	}
 
 	return s, nil
 }
 
-func (s *service) Configure() error {
-	if err := s.initDB(); err != nil {
+func (s *service) Configure(cfg *util.Config) error {
+	if err := s.initDB(cfg); err != nil {
 		return err
 	}
-	if err := s.buildDictionary(); err != nil {
+	if err := s.buildDictionary(cfg); err != nil {
 		return err
 	}
 	s.routes()

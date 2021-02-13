@@ -9,9 +9,14 @@ import (
 	"strings"
 
 	"github.com/clarketm/boggle-api/pkg/db"
+	"github.com/clarketm/boggle-api/pkg/util"
 )
 
-func (s *service) getAllWords() (io.Reader, error) {
+func (s *service) getAllWords(cfg *util.Config) (io.Reader, error) {
+	if !cfg.DbEnable {
+		return nil, nil
+	}
+
 	var row []byte
 	buf := bytes.Buffer{}
 
@@ -31,7 +36,11 @@ func (s *service) getAllWords() (io.Reader, error) {
 	return &buf, nil
 }
 
-func (s *service) initDB() error {
+func (s *service) initDB(cfg *util.Config) error {
+	if !cfg.DbEnable {
+		return nil
+	}
+
 	// Create database `db`.
 	createDbQuery := `CREATE DATABASE IF NOT EXISTS db;`
 	_, err := s.db.Execute(createDbQuery, nil)
