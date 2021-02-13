@@ -14,8 +14,9 @@ func (s *service) respond(w http.ResponseWriter, r *http.Request, data interface
 	w.WriteHeader(status)
 
 	if data != nil {
-		err := json.NewEncoder(w).Encode(data)
-		s.log.Error.Println(err)
+		if err := json.NewEncoder(w).Encode(data); err != nil {
+			s.log.Error.Println(err)
+		}
 	}
 
 }
