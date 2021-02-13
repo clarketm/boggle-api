@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: boggle-api
+  labels:
+    app: boggle-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: boggle-api
+  template:
+    metadata:
+      name: boggle-api
+      labels:
+        app: boggle-api
+    spec:
+      serviceAccountName: boggle-api
+      restartPolicy: Always
+      containers:
+        - name: boggle-api
+          image: clarketm/boggle-api:0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
